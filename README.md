@@ -13,6 +13,7 @@ Wrapper of ENet-CSharp and others utilities to easy develop Lan multiplayer game
 
 * [JSON.net](https://www.newtonsoft.com/json)
 * [.NET 4.0 compatibility](https://docs.microsoft.com/en-us/visualstudio/cross-platform/unity-scripting-upgrade?view=vs-2019)
+* [ENet C#](https://github.com/nxrighthere/ENet-CSharp)
 
 
 
