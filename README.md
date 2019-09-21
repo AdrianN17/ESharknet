@@ -31,6 +31,11 @@ Kit tool for easy develop Lan multiplayers games:
     void Update()
     {
         server.update();
+        
+        if (Input.GetKeyDown("space"))
+        {
+            server.SendToAll("Hi", "How are you?");
+        }
     }
 
     void OnDestroy()
