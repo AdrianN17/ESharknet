@@ -88,10 +88,7 @@ Kit tool for easy develop Lan multiplayers games:
     public ushort port;
     public ushort port_send;
     private Broadcast_send broadcast;
-    //public GameObject server_manager;
     public int timedelay;
-
-    //private Server_script server_script;
 
     void Start()
     {
