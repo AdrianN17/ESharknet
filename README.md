@@ -1,9 +1,14 @@
 # E_Sharknet
 Wrapper of ENet-CSharp and others utilities to easy develop Lan multiplayer games
 
-![alt text](https://img.shields.io/badge/.NET-4.0-brightgreen) ![alt_text](https://img.shields.io/badge/Version-0.1-blue)
+![alt text](https://img.shields.io/badge/.NET-4.0-brightgreen) ![alt_text](https://img.shields.io/badge/Version-0.1-blue) 
 
 ## Description:
+
+Kit tool for easy develop Lan multiplayers games:
+
+* Fin server using broadcasting
+* Easy wrapp to EnetSharp, like [sock.lua](https://github.com/camchenry/sock.lua)
 
 ## Example:
 
