@@ -81,6 +81,59 @@ Kit tool for easy develop Lan multiplayers games:
     }
 ```
 
+### Broadcast Send
+
+```c#
+
+    public ushort port;
+    public ushort port_send;
+    private Broadcast_send broadcast;
+    //public GameObject server_manager;
+    public int timedelay;
+
+    //private Server_script server_script;
+
+    void Start()
+    {
+        string ip = new LocalIP().SetLocalIP();
+
+
+        var server_details = new Dictionary<string, dynamic>();
+        server_details.Add("ip", "192.168.0.3");
+        server_details.Add("port", 22122);
+        server_details.Add("players", 1);
+        server_details.Add("max_players", 8);
+        server_details.Add("name_server", room1);
+
+        var data = new Dictionary<string, dynamic>() {
+            { "broadcast",server_details }
+        };
+
+        broadcast = new Broadcast_send(ip,port,port_send, timedelay, data);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+
+    }
+
+    void OnDestroy()
+    {
+        broadcast.Destroy();
+    }
+    
+```
+
+### Broadcast Receive
+
+```c#
+
+    broadcast = new Broadcast_receive(ip,22124,timedelay);
+```
+
+
 ## Documentation: 
 
 ## Dependences:
