@@ -14,7 +14,7 @@ Kit tool for easy develop Lan multiplayers games:
 
 ### Server
 
-```
+```c#
     public ushort port;
     public int max_clients;
     public int timeout;
