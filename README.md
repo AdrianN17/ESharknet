@@ -43,8 +43,37 @@ Kit tool for easy develop Lan multiplayers games:
 
 ### Client
 
-```
+```c#
+    public ushort port;
+    public int timeout;
+    public Client client;
+    public string ip;
 
+    void Start()
+    {
+
+        ip = new LocalIP().SetLocalIP();
+
+        client = new Client(ip,port,0,timeout);
+
+        client.AddTrigger("Hi", delegate (ENet.Event net_event) {
+            var obj = client.JSONDecode(net_event.Packet);
+            Debug.Log(obj.value);
+        });
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        client.update();
+    }
+
+    void OnDestroy()
+    {
+        client.Destroy();
+        Debug.LogWarning("Destroy gameobject");
+        client = null;
+    }
 ```
 
 ## Documentation: 
