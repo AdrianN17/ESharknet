@@ -12,6 +12,41 @@ Kit tool for easy develop Lan multiplayers games:
 
 ## Example:
 
+### Server
+
+```
+    public ushort port;
+    public int max_clients;
+    public int timeout;
+    public Server server;
+    public string ip;
+
+    void Start()
+    {
+        ip = new LocalIP().SetLocalIP();
+        server = new Server(ip,port,max_clients,0,timeout);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        server.update();
+    }
+
+    void OnDestroy()
+    {
+        server.Destroy();
+        Debug.LogWarning("Destroy gameobject");
+        server = null;
+    }
+```
+
+### Client
+
+```
+
+```
+
 ## Documentation: 
 
 ## Dependences:
