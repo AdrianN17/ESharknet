@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -26,19 +27,35 @@ namespace Assets.Libs.Esharknet.Broadcast
 
             thread = new Thread(delegate ()
             {
-                while (udpServer != null)
+                while (udpServer != null && thread != null)
                 {
                     var data = new Dictionary<string, dynamic>()
                     {
                         {"broadcast", broadcast_data}
                     };
 
-                    var json_data = JsonConvert.SerializeObject(data, Formatting.Indented);
+                    try
+                    { 
 
-                    Debug.Log("Broadcast Send : "+ json_data);
+                        var json_data = JsonConvert.SerializeObject(data, Formatting.Indented);
 
-                    var bytes = Encoding.ASCII.GetBytes(json_data);
-                    udpServer.Send(bytes, bytes.Length, "255.255.255.255", port_send);
+                        Debug.Log("Broadcast Send : "+ json_data);
+
+                        var bytes = Encoding.ASCII.GetBytes(json_data);
+
+                        if(udpServer != null)
+                        {
+                            udpServer.Send(bytes, bytes.Length, "255.255.255.255", port_send);
+                        }
+                            
+                    }
+                    catch(ThreadAbortException ex)
+                    {
+                        Debug.LogWarning(ex.Message);
+                        Thread.ResetAbort(); 
+                    }
+
+
 
                 }
             });

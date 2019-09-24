@@ -26,23 +26,30 @@ namespace Assets.Libs.Esharknet.Broadcast
 
             thread = new Thread(delegate ()
             {
-                while (udpClient!=null)
+                while (udpClient != null && thread != null)
                 {
-
-                    var bytes = udpClient.Receive(ref ip_point);
-                    var json_data = Encoding.ASCII.GetString(bytes);
-                    var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json_data);
-
-                    Debug.Log("Broadcast receive : " + json_data);
-
-
-                    if(dictionary.ContainsKey("Broadcast"))
+                    try
                     {
-                        var data = dictionary["Broadcast"];
-                        validate(data["ip"],data);
+                        if (udpClient != null)
+                        {
+                            var bytes = udpClient.Receive(ref ip_point);
+                            var json_data = Encoding.ASCII.GetString(bytes);
+                            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json_data);
+
+                            Debug.Log("Broadcast receive : " + json_data);
+
+                            var data = dictionary["Broadcast"];
+                            validate(data["ip"], data);
+                        }
+                    }
+                    catch (ThreadAbortException ex)
+                    {
+                        Debug.LogWarning(ex.Message);
+                        Thread.ResetAbort();
                     }
 
-                }
+
+            }
 
             });
 
@@ -69,11 +76,17 @@ namespace Assets.Libs.Esharknet.Broadcast
             }
         }
 
+        Dictionary<string, dynamic> GetListObtained()
+        {
+            return this.servers_list;
+        }
+
         public void Destroy()
         {
             Debug.LogWarning("Broadcast receive finish");
             thread.Abort();
             udpClient.Close();
+            servers_list.Clear();
 
             udpClient = null;
             thread = null;
