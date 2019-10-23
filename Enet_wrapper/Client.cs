@@ -42,7 +42,6 @@ namespace Assets.Libs.Esharknet
                     return;
                 }
 
-
                 switch (netEvent.Type)
                 {
                     case ENet.EventType.None:
@@ -74,6 +73,22 @@ namespace Assets.Libs.Esharknet
                         break;
                 }
             }
+        }
+
+        public void Send(string event_name, dynamic data_value, bool Encode = true, int channel = 0)
+        {
+            ENet.Packet packet;
+
+            if (Encode)
+            {
+                packet = JSONEncode(new Data(event_name, data_value));
+            }
+            else
+            {
+                packet = data_value;
+            }
+
+            peer.Send((byte)channel, ref packet);
         }
 
         public void Destroy()

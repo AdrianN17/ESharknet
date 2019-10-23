@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Assets.Libs.Esharknet.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -14,7 +15,9 @@ namespace Assets.Libs.Esharknet.Broadcast
         public UdpClient udpClient;
         private IPEndPoint ip_point;
         private Thread thread;
-        private Dictionary<string, dynamic> servers_list;
+        private List<Data_broadcast> servers_list;
+
+        private bool loop = true;
 
         public Broadcast_receive(string ip_address, ushort port_send, int timedelay)
         {
@@ -22,75 +25,88 @@ namespace Assets.Libs.Esharknet.Broadcast
             ip_point = new IPEndPoint(IPAddress.Parse(ip_address), port_send);
             udpClient.Client.Bind(ip_point);
 
-            //servers_list = new Dictionary<string, dynamic>();
+            servers_list = new List<Data_broadcast>();
 
             thread = new Thread(delegate ()
             {
-                while (udpClient != null && thread != null)
+                while (loop)
                 {
                     try
                     {
-                        if (udpClient != null)
+
+                        var bytes = udpClient.Receive(ref ip_point);
+
+                        if (bytes.Length > 0)
                         {
-                            var bytes = udpClient.Receive(ref ip_point);
                             var json_data = Encoding.ASCII.GetString(bytes);
-                            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json_data);
+                            var data = JsonConvert.DeserializeObject<Data>(json_data);
 
                             Debug.Log("Broadcast receive : " + json_data);
 
-                            var data = dictionary["Broadcast"];
-                            validate(data["ip"], data);
+                            if (data.key== "broadcast")
+                            {
+                                
+                                var data_value = data.value.ToObject<Data_broadcast>();
+                                Debug.Log(data.value);
+                                var data_existence = validate_ip_existence(data_value.ip);
+
+                                Debug.Log("Broadcast receive ip is : " + data_value.ip);
+
+                                if (data_existence==null)
+                                {
+                                    servers_list.Add(data_value);
+                                }
+                                else
+                                {
+                                    servers_list[servers_list.IndexOf(data_existence)] = data_value;
+                                }
+                            }
+                            
                         }
+
+                        
                     }
-                    catch (ThreadAbortException ex)
+                    catch (SocketException ex) // or whatever the exception is that you're getting
                     {
                         Debug.LogWarning(ex.Message);
-                        Thread.ResetAbort();
                     }
 
 
-            }
-
+                    Thread.Sleep(timedelay);
+                }
             });
 
             thread.Start();
-            Thread.Sleep(1000);
-
-            /*
-             *  {broadcast = {ip=192.168.0.3,port=22122,players=1,max_players=5,name_server=room1}}
-             * 
-             */
 
         }
 
-        private void validate(string ip,dynamic data)
+        public Data_broadcast validate_ip_existence(string ip)
         {
-            if(servers_list.ContainsKey(ip))
+            foreach(var data in servers_list)
             {
-                var dictionary = data;
-                servers_list[ip]["players"] = data["players"];
+                if(data.ip==ip)
+                {
+                    return data;
+                }
             }
-            else
-            {
-                servers_list.Add(ip,data);
-            }
+
+            return null;
         }
 
-        Dictionary<string, dynamic> GetListObtained()
+        public List<Data_broadcast> GetListObtained()
         {
-            return this.servers_list;
+            return servers_list;
         }
 
         public void Destroy()
         {
             Debug.LogWarning("Broadcast receive finish");
-            thread.Abort();
+
+            loop = false;
+
             udpClient.Close();
             servers_list.Clear();
-
-            udpClient = null;
-            thread = null;
-            
+ 
         }
     }
 }
