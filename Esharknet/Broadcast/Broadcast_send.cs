@@ -5,12 +5,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Assets.Libs.Esharknet.Model;
-using Newtonsoft.Json;
+using Assets.Libs.Esharknet.Serialize;
 using UnityEngine;
 
 namespace Assets.Libs.Esharknet.Broadcast
 {
-    public class Broadcast_send
+    public class Broadcast_send: Serialize_Class
     {
 
         public UdpClient udpServer;
@@ -35,13 +35,10 @@ namespace Assets.Libs.Esharknet.Broadcast
                 while (loop)
                 {
 
-                    var json_data  = JsonConvert.SerializeObject(data);
+                    var byte_data = Serialize(data);
 
-                    Debug.Log("Broadcast Send : "+ json_data);
 
-                    var bytes = Encoding.ASCII.GetBytes(json_data);
-
-                    udpServer.Send(bytes, bytes.Length, "255.255.255.255", port_send);
+                    udpServer.Send(byte_data, byte_data.Length, "255.255.255.255", port_send);
 
                     Thread.Sleep(timedelay);
 

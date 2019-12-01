@@ -1,5 +1,5 @@
 ﻿using Assets.Libs.Esharknet.Model;
-using Newtonsoft.Json;
+using Assets.Libs.Esharknet.Serialize;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Libs.Esharknet.Broadcast
 {
-    public class Broadcast_receive
+    public class Broadcast_receive:Serialize_Class
     {
         public UdpClient udpClient;
         private IPEndPoint ip_point;
@@ -38,16 +38,14 @@ namespace Assets.Libs.Esharknet.Broadcast
 
                         if (bytes.Length > 0)
                         {
-                            var json_data = Encoding.ASCII.GetString(bytes);
-                            var data = JsonConvert.DeserializeObject<Data>(json_data);
+                            
+                            var data = (Data)Deserialize(bytes);
 
-                            Debug.Log("Broadcast receive : " + json_data);
 
                             if (data.key== "broadcast")
                             {
-                                
-                                var data_value = data.value.ToObject<Data_broadcast>();
-                                Debug.Log(data.value);
+
+                                var data_value = (Data_broadcast)data.value;
                                 var data_existence = validate_ip_existence(data_value.ip);
 
                                 Debug.Log("Broadcast receive ip is : " + data_value.ip);
@@ -66,7 +64,7 @@ namespace Assets.Libs.Esharknet.Broadcast
 
                         
                     }
-                    catch (SocketException ex) // or whatever the exception is that you're getting
+                    catch (SocketException ex) 
                     {
                         Debug.LogWarning(ex.Message);
                     }

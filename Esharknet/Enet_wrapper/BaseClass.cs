@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using ENet;
-using Newtonsoft.Json;
-using UnityEngine;
+using Assets.Libs.Esharknet.Serialize;
 
 namespace Assets.Libs.Esharknet
 {
-    public class BaseClass
+    public class BaseClass: Serialize_Class
     {
         protected Dictionary<string, Action<ENet.Event>> TriggerFunctions;
         protected int timeout;
@@ -17,31 +14,21 @@ namespace Assets.Libs.Esharknet
             this.TriggerFunctions = new Dictionary<string, Action<ENet.Event>>();
         }
 
-        public ENet.Packet JSONEncode(Data data)
+        public ENet.Packet Encode(Data data)
         {
             ENet.Packet packet = default(ENet.Packet);
-
-            String json_value = JsonConvert.SerializeObject(data);
-            Byte[] byte_data = Encoding.ASCII.GetBytes(json_value);
-            packet.Create(byte_data);
-
-            Debug.Log("Sending : " + json_value);
-
+            packet.Create(Serialize(data));
 
             return packet;
         }
 
-        public Data JSONDecode(ENet.Packet packet_data)
+        public Data Decode(ENet.Packet packet_data)
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[packet_data.Length];
 
             packet_data.CopyTo(buffer);
-            string json_value = Encoding.ASCII.GetString(buffer);
 
-            Debug.Log("Received : " + json_value);
-
-            Data data = JsonConvert.DeserializeObject<Data>(json_value);
-            return data;
+            return (Data)Deserialize(buffer);
         }
 
         protected void ExecuteTrigger(string key, ENet.Event netEvent)
@@ -52,13 +39,13 @@ namespace Assets.Libs.Esharknet
             }
             else
             {
-                Debug.LogError(key + " function not defined in dictionary");
+               //Debug.LogError(key + " function not defined in dictionary");
             }
         }
 
         protected void ExecuteTriggerBytes(ENet.Event netEvent)
         {
-            Data data = JSONDecode(netEvent.Packet);
+            Data data = Decode(netEvent.Packet);
 
             if (TriggerFunctions.ContainsKey(data.key))
             {
@@ -66,7 +53,7 @@ namespace Assets.Libs.Esharknet
             }
             else
             {
-                Debug.LogError(data.key + " function not defined in dictionary");
+                //Debug.LogError(data.key + " function not defined in dictionary");
             }
         }
 

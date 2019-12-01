@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Assets.Libs.Esharknet.Model
 {
+    [Serializable]
     public class Data_broadcast
     {
-        public string ip;
-        public int port;
-        public int players;
-        public int max_players;
-        public string name_server;
+        public string ip { get; set; }
+        public int port { get; set; }
+        public int players { get; set; }
+        public int max_players { get; set; }
+        public string name_server { get; set; }
 
         public Data_broadcast(string ip, int port, int players, int max_players, string name_server)
         {
