@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Assets.Libs.Esharknet.Model;
 using Assets.Libs.Esharknet.Serialize;
-using UnityEngine;
 
 namespace Assets.Libs.Esharknet.Broadcast
 {
@@ -51,7 +47,7 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         public void Destroy()
         {
-            Debug.LogWarning("Broadcast send finish");
+            //Debug.LogWarning("Broadcast send finish");
 
             loop = false;
 

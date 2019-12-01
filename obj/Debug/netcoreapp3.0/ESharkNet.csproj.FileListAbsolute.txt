@@ -1,0 +1,3 @@
+D:\Proyectos\ESharkNet\obj\Debug\netcoreapp3.0\ESharkNet.csprojAssemblyReference.cache
+D:\Proyectos\ESharkNet\obj\Debug\netcoreapp3.0\ESharkNet.AssemblyInfoInputs.cache
+D:\Proyectos\ESharkNet\obj\Debug\netcoreapp3.0\ESharkNet.AssemblyInfo.cs

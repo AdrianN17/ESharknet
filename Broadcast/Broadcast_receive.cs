@@ -1,12 +1,9 @@
 ﻿using Assets.Libs.Esharknet.Model;
 using Assets.Libs.Esharknet.Serialize;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using UnityEngine;
 
 namespace Assets.Libs.Esharknet.Broadcast
 {
@@ -48,7 +45,7 @@ namespace Assets.Libs.Esharknet.Broadcast
                                 var data_value = (Data_broadcast)data.value;
                                 var data_existence = validate_ip_existence(data_value.ip);
 
-                                Debug.Log("Broadcast receive ip is : " + data_value.ip);
+                                //Debug.Log("Broadcast receive ip is : " + data_value.ip);
 
                                 if (data_existence==null)
                                 {
@@ -66,7 +63,7 @@ namespace Assets.Libs.Esharknet.Broadcast
                     }
                     catch (SocketException ex) 
                     {
-                        Debug.LogWarning(ex.Message);
+                        //Debug.LogWarning(ex.Message);
                     }
 
 
@@ -98,7 +95,7 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         public void Destroy()
         {
-            Debug.LogWarning("Broadcast receive finish");
+            //Debug.LogWarning("Broadcast receive finish");
 
             loop = false;
 

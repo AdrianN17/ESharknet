@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using ENet;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Assets.Libs.Esharknet
 {
@@ -46,8 +40,6 @@ namespace Assets.Libs.Esharknet
             client.EnableCompression();
 
             peer = client.Connect(address);
-
-
 
         }
 
