@@ -16,6 +16,14 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         private bool loop = true;
 
+        /// <summary>
+        /// Inicializate Broadcast to send data
+        /// </summary>
+        /// <param name="ip_address">IP to send</param>
+        /// <param name="port">Port to send</param>
+        /// <param name="port_send">Destination Port</param>
+        /// <param name="timedelay">Frecuency of time to every send</param>
+        /// <param name="broadcast_data">Data to send</param>
         public Broadcast_send(string ip_address,ushort port, ushort port_send, int timedelay, Data_broadcast broadcast_data)
         {
             udpServer = new UdpClient();
@@ -45,6 +53,9 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         }
 
+        /// <summary>
+        /// Destroy Broadcast Send
+        /// </summary>
         public void Destroy()
         {
             //Debug.LogWarning("Broadcast send finish");

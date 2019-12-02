@@ -16,6 +16,12 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         private bool loop = true;
 
+        /// <summary>
+        /// Inicializate Broadcast to receive data
+        /// </summary>
+        /// <param name="ip_address">IP to send</param>
+        /// <param name="port_send">Destination Port</param>
+        /// <param name="timedelay">Frecuency of time to every send</param>
         public Broadcast_receive(string ip_address, ushort port_send, int timedelay)
         {
             udpClient = new UdpClient();
@@ -75,6 +81,10 @@ namespace Assets.Libs.Esharknet.Broadcast
 
         }
 
+        /// <summary>
+        /// Validate IP in another object Data
+        /// </summary>
+        /// <returns>Get Data_Broadcast Object</returns>
         public Data_broadcast validate_ip_existence(string ip)
         {
             foreach(var data in servers_list)
@@ -87,12 +97,18 @@ namespace Assets.Libs.Esharknet.Broadcast
 
             return null;
         }
-
+        /// <summary>
+        /// Get All Data obtained by Broadcast
+        /// </summary>
+        /// <returns>Get Data Broadcast List</returns>
         public List<Data_broadcast> GetListObtained()
         {
             return servers_list;
         }
 
+        /// <summary>
+        /// Destroy Broadcast Receive
+        /// </summary>
         public void Destroy()
         {
             //Debug.LogWarning("Broadcast receive finish");

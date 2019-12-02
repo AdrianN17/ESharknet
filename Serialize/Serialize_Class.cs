@@ -7,7 +7,11 @@ namespace Assets.Libs.Esharknet.Serialize
 {
     public class Serialize_Class
     {
-
+        /// <summary>
+        /// Serialize Object to Byte Array
+        /// </summary>
+        /// <param name="o">Object to Serialize</param>
+        /// <returns>get Byte Array</returns>
         public static Byte[] Serialize(object o)
         {
             MemoryStream stream = new MemoryStream();
@@ -16,6 +20,11 @@ namespace Assets.Libs.Esharknet.Serialize
             return stream.ToArray();
         }
 
+        /// <summary>
+        /// Deserialize Byte Array to Object
+        /// </summary>
+        /// <param name="bytes">Byte Array to Deserialize</param>
+        /// <returns>get Object</returns>
         public static object Deserialize(Byte[] bytes)
         {
             Stream stream = new MemoryStream(bytes);

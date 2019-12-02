@@ -11,6 +11,17 @@ namespace Assets.Libs.Esharknet
         private List<Peer> clients;
 
 
+        /// <summary>
+        /// Inicializate server
+        /// max_channel default value is 0 and mean all channel, required
+        /// timeout default value is 15, required
+        /// </summary>
+        /// <param name="ip_address">IP used for server </param>
+        /// <param name="port">Port used for server</param>
+        /// <param name="max_clients">Max clients in server</param>
+        /// <param name="max_channel">Max channel used in server - Opcional</param>
+        /// <param name="timeout">Max time to client's response time</param>
+
         public Server(string ip_address, ushort port, int max_clients, int max_channel, int timeout)
         {
 
@@ -48,6 +59,9 @@ namespace Assets.Libs.Esharknet
            // Debug.Log("Create server IP : " + ip_address);
         }
 
+        /// <summary>
+        /// Update server
+        /// </summary>
         public void update()
         {
 
@@ -71,6 +85,16 @@ namespace Assets.Libs.Esharknet
 
         }
 
+        /// <summary>
+        /// Send packet to clients
+        /// encode false is used in the case the data bounces to another Peer
+        /// channel 0 is all channel
+        /// </summary>
+        /// <param name="event_name">Name for event </param>
+        /// <param name="data_value">Object Data to send </param>
+        /// <param name="peer">Peer or client to send </param>
+        /// <param name="encode">Is neccesary encode the data to send? Default true</param>
+        /// <param name="channel">Channel used to send, Default 0</param>
         public void Send(string event_name, dynamic data_value, Peer peer, bool encode = true,int channel=0)
         {
             ENet.Packet packet;
@@ -87,6 +111,16 @@ namespace Assets.Libs.Esharknet
             peer.Send((byte)channel, ref packet);
         }
 
+
+        /// <summary>
+        /// Send packet to clients except to especific peer
+        /// encode false is used in the case the data bounces to another Peer
+        /// </summary>
+        /// <param name="event_name">Name for event </param>
+        /// <param name="data_value">Object Data to send </param>
+        /// <param name="peer">Peer or client to exclude </param>
+        /// <param name="encode">Is neccesary encode the data to send? Default true</param>
+        /// <param name="channel">Channel used to send, Default 0</param>
         public void SendToAllBut(string event_name, dynamic data_value, Peer peer, bool encode = true, int channel = 0)
         {
             ENet.Packet packet;
@@ -114,6 +148,14 @@ namespace Assets.Libs.Esharknet
             }
         }
 
+        /// <summary>
+        /// Send packet to all clients
+        /// encode false is used in the case the data bounces to another Peer
+        /// </summary>
+        /// <param name="event_name">Name for event </param>
+        /// <param name="data_value">Object Data to send </param>
+        /// <param name="encode">Is neccesary encode the data to send? Default true</param>
+        /// <param name="channel">Channel used to send, Default 0</param>
         public void SendToAll(string event_name, dynamic data_value, bool encode = true, int channel = 0)
         {
             ENet.Packet packet;
@@ -130,6 +172,15 @@ namespace Assets.Libs.Esharknet
             server.Broadcast((byte)channel, ref packet);
         }
 
+        /// <summary>
+        /// Send packet to client - Peer
+        /// encode false is used in the case the data bounces to another Peer
+        /// </summary>
+        /// <param name="event_name">Name for event </param>
+        /// <param name="data_value">Object Data to send </param>
+        /// <param name="peer">Peer or client to send </param>
+        /// <param name="encode">Is neccesary encode the data to send? Default true</param>
+        /// <param name="channel">Channel used to send, Default 0</param>
         public void SendToPeer(string event_name, dynamic data_value, Peer peer, bool encode = true,int channel=0)
         {
             ENet.Packet packet;
@@ -146,6 +197,15 @@ namespace Assets.Libs.Esharknet
             peer.Send((byte)channel, ref packet);
         }
 
+        /// <summary>
+        /// Send packet to client - Peer by index
+        /// encode false is used in the case the data bounces to another Peer
+        /// </summary>
+        /// <param name="event_name">Name for event </param>
+        /// <param name="data_value">Object Data to send </param>
+        /// <param name="index">Peer or client index to send </param>
+        /// <param name="encode">Is neccesary encode the data to send? Default true</param>
+        /// <param name="channel">Channel used to send, Default 0</param>
         public void SendToPeerIndex(string event_name, dynamic data_value, int index, bool encode = true, int channel = 0)
         {
             ENet.Packet packet;
@@ -162,16 +222,28 @@ namespace Assets.Libs.Esharknet
             clients[index].Send((byte)channel, ref packet);
         }
 
+        /// <summary>
+        /// Get Peers List
+        /// </summary>
+        /// <returns>Peers List</returns>
         public List<Peer> GetListClients()
         {
             return clients;
         }
 
+        /// <summary>
+        /// Get Peers List count
+        /// </summary>
+        /// <returns>Peers List count</returns>
         public int GetListClientsCount()
         {
             return clients.Count;
         }
 
+        /// <summary>
+        /// Add new Peer
+        /// </summary>
+        /// <returns>index of Peer</returns>
         public int AddPeer(ENet.Event net_event)
         {
             clients.Add(net_event.Peer);
@@ -179,6 +251,10 @@ namespace Assets.Libs.Esharknet
             return index;
         }
 
+        /// <summary>
+        /// Remove new Peer
+        /// </summary>
+        /// <returns>index of Peer</returns>
         public int RemovePeer(ENet.Event net_event)
         {
             //Debug.LogError("Client delete");
@@ -188,6 +264,9 @@ namespace Assets.Libs.Esharknet
             return index;
         }
 
+        /// <summary>
+        /// ENet Server Callbacks 
+        /// </summary>
         void switch_callbacks(ENet.Event netEvent)
         {
             switch (netEvent.Type)
@@ -226,6 +305,9 @@ namespace Assets.Libs.Esharknet
             }
         }
 
+        /// <summary>
+        /// Disconnect all peers
+        /// </summary>
         public void DisconnectAllPeer()
         {
             foreach(Peer peer in clients)
@@ -234,6 +316,9 @@ namespace Assets.Libs.Esharknet
             }
         }
 
+        /// <summary>
+        /// Destroy Server
+        /// </summary>
         public void Destroy()
         {
             DisconnectAllPeer();
