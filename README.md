@@ -136,7 +136,6 @@ Kit tool for easy develop Lan multiplayers games:
 
 ## Dependences:
 
-* [JSON.net](https://www.newtonsoft.com/json)
 * [.NET 4.0 compatibility](https://docs.microsoft.com/en-us/visualstudio/cross-platform/unity-scripting-upgrade?view=vs-2019)
 * [ENet C#](https://github.com/nxrighthere/ENet-CSharp)
 
