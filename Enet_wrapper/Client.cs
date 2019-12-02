@@ -27,7 +27,7 @@ namespace Assets.Libs.Esharknet
             Callbacks callbacks = new Callbacks(OnMemoryAllocate, OnMemoryFree, OnNoMemory);
 
             if (ENet.Library.Initialize(callbacks))
-                Debug.LogWarning("ENet successfully initialized using a custom memory allocator");
+                //Debug.LogWarning("ENet successfully initialized using a custom memory allocator");
 
             client = new Host();
 
@@ -65,11 +65,11 @@ namespace Assets.Libs.Esharknet
  
         }
 
-        public void Send(string event_name, dynamic data_value, bool Encode = true, int channel = 0)
+        public void Send(string event_name, dynamic data_value, bool encode = true, int channel = 0)
         {
             ENet.Packet packet;
 
-            if (Encode)
+            if (encode)
             {
                 packet = Encode(new Data(event_name, data_value));
             }
@@ -89,25 +89,25 @@ namespace Assets.Libs.Esharknet
                     break;
 
                 case ENet.EventType.Connect:
-                    Debug.Log("Client connected to server");
+                    //Debug.Log("Client connected to server");
                     ExecuteTrigger("Connect", netEvent);
 
                     break;
 
                 case ENet.EventType.Disconnect:
-                    Debug.Log("Client disconnected from server");
+                    //Debug.Log("Client disconnected from server");
                     ExecuteTrigger("Disconnect", netEvent);
 
                     break;
 
                 case ENet.EventType.Timeout:
-                    Debug.Log("Client connection timeout");
+                    //Debug.Log("Client connection timeout");
                     ExecuteTrigger("Timeout", netEvent);
 
                     break;
 
                 case ENet.EventType.Receive:
-                    Debug.Log("Packet received from server - Channel ID: " + netEvent.ChannelID + ", Data length: " + netEvent.Packet.Length);
+                    //Debug.Log("Packet received from server - Channel ID: " + netEvent.ChannelID + ", Data length: " + netEvent.Packet.Length);
 
                     ExecuteTriggerBytes(netEvent);
                     netEvent.Packet.Dispose();
@@ -127,7 +127,7 @@ namespace Assets.Libs.Esharknet
 
             client.Flush();
             ENet.Library.Deinitialize();
-            Debug.LogWarning("Client finish");
+            //Debug.LogWarning("Client finish");
         }
     }
 }
