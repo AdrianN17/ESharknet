@@ -11,7 +11,19 @@ Kit tool for easy develop Lan multiplayers games:
 * Easy wrapp to EnetSharp, like [sock.lua](https://github.com/camchenry/sock.lua)
 
 
+## How To Install
 
+Copy Directories :
+
+* Broadcast
+* Enet_wrapper
+* IP
+* Model
+* Serialize
+
+And Add ENet C# in the same Dir
+
+Don´t forget add .NET 4.0 compatibility
 
 
 ## Documentation: 
